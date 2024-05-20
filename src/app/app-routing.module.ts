@@ -11,6 +11,7 @@ const routes: Routes = [
     /* Path, de el localhost:4200/home, pero sin el / entonces queda solo home */
     path: '',
     /* component: del componente que queremos renderizar */
+    /* Cuando se coloca el component no hay lazyLoad */
     component: HomePageComponent,
   },
   {
@@ -20,6 +21,13 @@ const routes: Routes = [
   {
     path: 'contact',
     component: ContactPageComponent,
+  },
+  /* Para carga perezosa, lazyLoad o carga bajo demanda, se usa loadChildren, que en si misma es una promesa */
+  /* primera parte del import es un path, de donde esta el modulo que quiere cargar pero de forma estatica */
+  /* .then en el que queremos que de ese modulo, cargues el modulo.CountrisModule */
+  {
+    path: 'countries',
+    loadChildren: () => import('./countries/countries.module').then( module => module.CountriesModule)
   },
   {
     /* ** es comodín para decir cualquier ruta en donde el localhost:4200/ vaya vacio */
