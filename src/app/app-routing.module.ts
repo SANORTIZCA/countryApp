@@ -7,13 +7,13 @@ import { HomePageComponent } from './shared/pages/home-page/home-page.component'
 
 /* Routes se exporta de @angular/router */
 const routes: Routes = [
-  {
-    /* Path, de el localhost:4200/home, pero sin el / entonces queda solo home */
-    path: '',
-    /* component: del componente que queremos renderizar */
-    /* Cuando se coloca el component no hay lazyLoad */
-    component: HomePageComponent,
-  },
+  /*   { */
+  /* Path, de el localhost:4200/home, pero sin el / entonces queda solo home */
+  /*     path: '', */
+  /* component: del componente que queremos renderizar */
+  /* Cuando se coloca el component no hay lazyLoad */
+  /*     component: HomePageComponent,
+  }, */
   {
     path: 'about',
     component: AboutPageComponent,
@@ -27,13 +27,16 @@ const routes: Routes = [
   /* .then en el que queremos que de ese modulo, cargues el modulo.CountrisModule */
   {
     path: 'countries',
-    loadChildren: () => import('./countries/countries.module').then( module => module.CountriesModule)
+    loadChildren: () =>
+      import('./countries/countries.module').then(
+        (module) => module.CountriesModule
+      ),
   },
   {
     /* ** es comodín para decir cualquier ruta en donde el localhost:4200/ vaya vacio */
     path: '**',
     /* redirecTo: para que me lleve a la ruta que indique en este caso home */
-    redirectTo: '',
+    redirectTo: 'countries',
   },
 ];
 
