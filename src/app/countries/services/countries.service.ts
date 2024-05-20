@@ -18,6 +18,7 @@ export class CountriesService {
   public searchCapital( term: string): Observable<Country[]>{
     /* Observable, y se realiza la petición http, en donde el get se le dice que retorna y al observable también*/
     /* Además hay que subscriberse a la respuesta, por que si no se susbcribe, se define pero no se ejecuta la petición*/
-    return this._httpClient.get<Country[]>(`${this._apiUrl}/capital/${term}`);
+    const url: string = `${this._apiUrl}/capital/${term}`;
+    return this._httpClient.get<Country[]>(url);
   }
 }
