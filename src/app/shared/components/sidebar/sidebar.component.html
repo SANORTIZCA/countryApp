@@ -1,0 +1,27 @@
+<h2>Países</h2>
+<hr>
+<ul class="list-group">
+  <!-- routerLink: para realizar la navegación y transformar el li en un link que reconozca el router se utiliza esta propiedad pidiendo el path, en este caso 'home' -->
+  <!--Se debe importar en el modulo para que lo reconozca como propiedad el componente que usa [routerLink] y se pueda usar de forma dinamica-->
+  <!-- routerLinkActive : sirve para colocar la propiedad "active" cuando ya nos encontramos en dicha ruta -->
+  <!-- routerLinkOptions: exact: true -> indica que tiene que ser exactamente el path con sus segmentos como esta definido ahí -->
+  <li
+    routerLink=""
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact: true}"
+    class="list-group-item">
+    Home Page
+  </li>
+  <li
+    routerLink="about"
+    routerLinkActive="active"
+    class="list-group-item">
+    About Page
+  </li>
+  <li
+    routerLink="contact"
+    routerLinkActive="active"
+    class="list-group-item">
+    Contact Page
+  </li>
+</ul>
