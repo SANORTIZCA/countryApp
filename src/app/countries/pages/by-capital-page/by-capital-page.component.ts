@@ -1,14 +1,28 @@
 import { Component} from '@angular/core';
 
+import { Country } from '../../interfaces/country.interface';
+
+import { CountriesService } from '../../services/countries.service';
+
 @Component({
   selector: 'countries-by-capital-page',
   templateUrl: './by-capital-page.component.html',
-  styles: ``
+  styles: ``,
 })
 export class ByCapitalPageComponent {
 
-  searchByCapital(term:string):void{
-    console.log('Desde ByCapitalPage');
-    console.log({term});
+  public _countries: Country[] = [];
+  private _countryService: CountriesService;
+
+  constructor(countryService: CountriesService) {
+    this._countryService = countryService;
+  }
+
+  searchByCapital(term: string): void {
+    /* Hay que subscribirse al observable, y hacer función flecha para traer esos valores */
+    this._countryService.searchCapital(term)
+      .subscribe(countries => {
+        this._countries = countries;
+      });
   }
 }
