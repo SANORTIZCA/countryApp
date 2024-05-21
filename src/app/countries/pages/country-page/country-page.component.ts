@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 
 import { CountriesService } from '../../services/countries.service';
+import { Country } from '../../interfaces/country.interface';
 
 
 @Component({
@@ -21,6 +22,8 @@ export class CountryPageComponent implements OnInit {
   private _countriesService: CountriesService
   private _router:Router;
 
+  public _country?: Country;
+
   constructor(activatedRoute: ActivatedRoute, countriesService: CountriesService, router:Router){
     this._activatedRoute = activatedRoute;
     this._countriesService = countriesService;
@@ -37,11 +40,8 @@ export class CountryPageComponent implements OnInit {
     )
     /* lo que se que regrese el switchMap es lo que le llega a este subscribe, en este caso el parametro es resp */
     .subscribe(country => {
-      if(!country){
-        return this._router.navigateByUrl('');;
-      }
-      console.log("Tenemos un país");
-      return;
+      if(!country) return this._router.navigateByUrl('')
+      return this._country = country;
     });
   }
 }
