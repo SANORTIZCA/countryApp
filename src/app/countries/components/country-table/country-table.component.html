@@ -25,7 +25,8 @@
         <td>{{country.capital}}</td>
         <td>{{country.population | number}}</td>
         <td>
-          <a href="#">Ver más</a>
+          <!-- Ahora el routerLink recibe un string, pero también un arreglo de strings -->
+          <a [routerLink]="['/countries/by',country.cca3]">Ver más</a>
         </td>
       </tr>
     </tbody>
