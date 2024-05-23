@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 
+/* estas interfaces se puede convertir en un archivo barril */
 import { Country } from '../interfaces/country.interface';
 import { CacheStore } from '../interfaces/cache-store.interface';
+import { Region } from '../interfaces/region.type';
 
 @Injectable({
   providedIn: 'root',
@@ -60,11 +62,19 @@ export class CountriesService {
 
   public searchCountry(term: string): Observable<Country[]> {
     const url: string = `${this._apiUrl}/name/${term}`;
-    return this.getCountriesRequest(url);
+    return this.getCountriesRequest(url)
+    .pipe(
+      /* El operador tab quiere decir que cuando venga un mensaje por el observable pasa por el tap ejecuta el tab, pero no influye en la emisión del observable. */
+      tap((countries) => (this.cacheStore.byCountries = { term, countries }))
+    );
   }
 
-  public searchRegion(region: string): Observable<Country[]> {
+  public searchRegion(region: Region): Observable<Country[]> {
     const url: string = `${this._apiUrl}/region/${region}`;
-    return this.getCountriesRequest(url);
+    return this.getCountriesRequest(url)
+    .pipe(
+      /* El operador tab quiere decir que cuando venga un mensaje por el observable pasa por el tap ejecuta el tab, pero no influye en la emisión del observable. */
+      tap((countries) => (this.cacheStore.byRegion = { region, countries }))
+    );
   }
 }
