@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 
 import { Country } from '../interfaces/country.interface';
 import { CacheStore } from '../interfaces/cache-store.interface';
@@ -51,7 +51,11 @@ export class CountriesService {
   } */
   public searchCapital(term: string): Observable<Country[]> {
     const url: string = `${this._apiUrl}/capital/${term}`;
-    return this.getCountriesRequest(url);
+    return this.getCountriesRequest(url)
+    .pipe(
+      /* El operador tab quiere decir que cuando venga un mensaje por el observable pasa por el tap ejecuta el tab, pero no influye en la emisión del observable. */
+      tap( countries => this.cacheStore.byCapital = { term, countries } )
+    )
   }
 
   public searchCountry(term: string): Observable<Country[]> {
