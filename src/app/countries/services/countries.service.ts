@@ -20,7 +20,7 @@ export class CountriesService {
     .pipe(
       catchError(() => of([])),
       /* retrasa el flujo de información por 2 sec, puede servir para hacer un loading */
-      delay(2000),
+      //delay(2000),
     );
   }
 
