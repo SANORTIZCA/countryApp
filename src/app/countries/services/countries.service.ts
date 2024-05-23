@@ -14,14 +14,28 @@ export class CountriesService {
   private _httpClient: HttpClient;
   private _apiUrl: string = 'https://restcountries.com/v3.1';
 
-  public cacheStore:CacheStore = {
+  public cacheStore: CacheStore = {
     byCapital: { term: '', countries: [] },
     byCountries: { term: '', countries: [] },
-    byRegion: {region: '', countries: []},
+    byRegion: { region: '', countries: [] },
   };
 
   constructor(httpClient: HttpClient) {
     this._httpClient = httpClient;
+    /* FromLocalStorage queremos que se ejecute cuando se inicializa el componente */
+    this.loadFromLocalStorage();
+  }
+
+  private safeToLocalStorage(): void {
+    /* en local storage solo se pueden guardar strings, con JSONstringify se pasa el cache storage a string */
+    localStorage.setItem('cacheStore', JSON.stringify(this.cacheStore));
+  }
+
+  private loadFromLocalStorage(): void {
+    /* Primero se verifica si el localStorage tiene el elemento cacheStore */
+    if (localStorage.getItem('cacheStore')) return;
+    /* JSON.parse convierte de string de nuevo a nuestor objeto */
+    this.cacheStore = JSON.parse(localStorage.getItem('cacheStore')!);
   }
 
   private getCountriesRequest(url: string): Observable<Country[]> {
@@ -53,28 +67,28 @@ export class CountriesService {
   } */
   public searchCapital(term: string): Observable<Country[]> {
     const url: string = `${this._apiUrl}/capital/${term}`;
-    return this.getCountriesRequest(url)
-    .pipe(
+    return this.getCountriesRequest(url).pipe(
       /* El operador tab quiere decir que cuando venga un mensaje por el observable pasa por el tap ejecuta el tab, pero no influye en la emisión del observable. */
-      tap( countries => this.cacheStore.byCapital = { term, countries } )
-    )
+      tap((countries) => (this.cacheStore.byCapital = { term, countries })),
+      tap(() => this.safeToLocalStorage())
+    );
   }
 
   public searchCountry(term: string): Observable<Country[]> {
     const url: string = `${this._apiUrl}/name/${term}`;
-    return this.getCountriesRequest(url)
-    .pipe(
+    return this.getCountriesRequest(url).pipe(
       /* El operador tab quiere decir que cuando venga un mensaje por el observable pasa por el tap ejecuta el tab, pero no influye en la emisión del observable. */
-      tap((countries) => (this.cacheStore.byCountries = { term, countries }))
+      tap((countries) => (this.cacheStore.byCountries = { term, countries })),
+      tap(() => this.safeToLocalStorage())
     );
   }
 
   public searchRegion(region: Region): Observable<Country[]> {
     const url: string = `${this._apiUrl}/region/${region}`;
-    return this.getCountriesRequest(url)
-    .pipe(
+    return this.getCountriesRequest(url).pipe(
       /* El operador tab quiere decir que cuando venga un mensaje por el observable pasa por el tap ejecuta el tab, pero no influye en la emisión del observable. */
-      tap((countries) => (this.cacheStore.byRegion = { region, countries }))
+      tap((countries) => (this.cacheStore.byRegion = { region, countries })),
+      tap(() => this.safeToLocalStorage())
     );
   }
 }
