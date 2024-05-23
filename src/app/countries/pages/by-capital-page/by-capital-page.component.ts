@@ -12,6 +12,7 @@ import { CountriesService } from '../../services/countries.service';
 export class ByCapitalPageComponent {
 
   public _countries: Country[] = [];
+  public _isLoading: boolean = false;
   private _countryService: CountriesService;
 
   constructor(countryService: CountriesService) {
@@ -19,10 +20,12 @@ export class ByCapitalPageComponent {
   }
 
   searchByCapital(term: string): void {
+    this._isLoading = true;
     /* Hay que subscribirse al observable, y hacer función flecha para traer esos valores */
     this._countryService.searchCapital(term)
       .subscribe(countries => {
         this._countries = countries;
+        this._isLoading = false;
       });
   }
 }
